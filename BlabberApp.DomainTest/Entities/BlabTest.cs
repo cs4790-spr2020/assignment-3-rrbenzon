@@ -44,5 +44,16 @@ namespace BlabberApp.DomainTest.Entities
             Assert.AreEqual(actual, expected);
             Assert.AreEqual(true, harness.getSysId() is string);
         }
+
+        [TestMethod]
+        public void TestDTTM()
+        {
+            // Arrange
+            Blab Expected = new Blab();
+            // Act
+            Blab Actual = new Blab();
+            // Assert
+            Assert.AreEqual(Expected.DTTM.ToString(), Actual.DTTM.ToString());
+        }
     }
 }

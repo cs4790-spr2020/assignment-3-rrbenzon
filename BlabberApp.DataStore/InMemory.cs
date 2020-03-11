@@ -2,64 +2,80 @@
 using System.Collections;
 using BlabberApp.Domain.Entities;
 using BlabberApp.Domain.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BlabberApp.DataStore
 {
-    public class InMemory : IDataStore
+    public class InMemory<T> : IRepository<T> where T : BaseEntity
     {
-        private ArrayList _items = new ArrayList();
 
-        public InMemory()
-        {
-        }
-        
-        public bool Create(IDatum datum)
-        {
-            int idx = this._items.Add(datum);
-            if (idx < 0)
-            {
-                throw new ArgumentOutOfRangeException("OH No!");
-            }
-            return true;
-        }
-        public IDatum Read(int idx)
-        {
-            return (IDatum)this._items[idx];
-        }
-        public bool Update(IDatum datum)
-        {
-            return true;
-        }
-        public bool Delete(int idx)
-        {
-            try
-            {
-                this._items.RemoveAt(idx);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                throw e;
-            }
-            return true;
-        }
-        
+        private ApplicationContext Context;
+        private DbSet<T> _entities;
 
-        // T Add<T>(T item) where T : BaseDatum
-        // {
-        //     return item;
-        // }
-        // void Delete<T>(T item) where T : BaseDatum
-        // {
+        public InMemory(ApplicationContext context)
+        {
+            Context = context;
+            _entities = context.Set<T>();
+        }
 
-        // }
-        // List<T> GetAll<T>(ISpecification<T> spec = null) where T : BaseDatum
-        // {
-        //     return;
-        // }
-        // T GetById<T>(string sysId) where T : BaseDatum
-        // {
-        //     return BaseDatum;
-        //     void Update<T>(T item) where T : BaseDatum { }
-        // }
+        public void Add(T entity)
+        {
+            if(entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            _entities.Add(entity);
+            Context.SaveChanges();
+        }
+
+        public void Remove(T entity)
+        {
+            if(entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            
+            _entities.Remove(entity);
+            Context.SaveChanges();
+        }
+
+        public void Update(T entity)
+        {
+            if(entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            Context.SaveChanges();
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+            return _entities.AsEnumerable();
+        }
+
+        public T GetBySysId(string sysId)
+        {
+            if(sysId.Equals(""))
+            {
+                throw new ArgumentNullException("sysId");
+            }
+
+            return _entities.SingleOrDefault(s => s.getSysId() == sysId);
+        }
+
+        public T GetByUserId(string userId)
+        {
+            if(userId.Equals(""))
+            {
+                throw new ArgumentNullException("userId");
+            }
+
+            return _entities.SingleOrDefault(s => s.getUserId() == userId);
+        }
     }
 }

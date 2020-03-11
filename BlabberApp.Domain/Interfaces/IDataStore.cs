@@ -2,9 +2,9 @@
 {
     public interface IDataStore
     {
-        bool Create(IDatum datum);
-        IDatum Read(int idx);
-        bool Update(IDatum datum);
+        bool Create(IBaseEntity entity);
+        IBaseEntity Read(int idx);
+        bool Update(IBaseEntity entity);
         bool Delete(int idx);
 
     }

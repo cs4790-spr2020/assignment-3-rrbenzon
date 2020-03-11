@@ -1,6 +1,6 @@
 namespace BlabberApp.Domain.Interfaces
 {
-    public interface IDatum
+    public interface IBaseEntity
     {
         string getSysId();
     }
