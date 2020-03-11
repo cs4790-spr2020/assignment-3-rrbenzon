@@ -7,7 +7,7 @@ namespace BlabberApp.Domain.Entities
         public DateTime CreatedDTTM {get; set;}
         public DateTime ModifiedDTTM{get;set;}
         private string _SysId;
-        private string _userId;
+        //private string _userId;
         
 
         public BaseEntity()
@@ -21,9 +21,9 @@ namespace BlabberApp.Domain.Entities
             return _SysId; 
         }
 
-        public string getUserId() {
-            return _userId; 
-        }
+        // public string getUserId() {
+        //     return _userId; 
+        // }
 
         public bool Equals(string otherId)
         {
