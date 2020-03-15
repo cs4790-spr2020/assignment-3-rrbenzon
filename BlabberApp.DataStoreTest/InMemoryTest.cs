@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.EntityFrameworkCore;
 using BlabberApp.DataStore;
 using BlabberApp.Domain.Entities;
 
@@ -10,7 +11,9 @@ namespace BlabberApp.DataStoreTest
         private InMemory<Blab> _harness;
         public InMemoryTest()
         {
-            _harness = new InMemory<Blab>();
+            var options = new DbContextOptionsBuilder<ApplicationContext>()
+            .UseInMemoryDatabase(databaseName: "Add_writes").Options;
+            _harness = new InMemory<Blab>(new ApplicationContext(options));
         }
         
         [TestMethod]

@@ -9,6 +9,6 @@ namespace BlabberApp.Domain.Interfaces {
         void Update(T entity);
         IEnumerable<T>GetAll();
         T GetBySysId(string sysId);
-        //T GetByUserId(string userId);
+        T GetByUserId(string userId);
     }
 }
